@@ -43,25 +43,12 @@ class MultinomialNaiveBayes(LinearClassifier):
         positive_class = x[np.where(y.reshape(1, -1).reshape(-1) == 0)]
         negative_class = x[np.where(y.reshape(1, -1).reshape(-1) == 1)]
 
-        positve_sum = np.sum(positive_class, axis=0)
-        negative_sum = np.sum(negative_class, axis=0)
+        positve_sum = [np.sum(positive_class, axis=0), np.sum(np.sum(positive_class, axis=0))]
+        negative_sum = [np.sum(negative_class, axis=0), np.sum(np.sum(negative_class, axis=0))]
 
-        positve_total_sum = np.sum(positve_sum)
-        negative_total_sum = np.sum(negative_sum)
+        likelihood = np.array([[(positve_sum[0][i] + 1) / (positve_sum[1] + n_words), (negative_sum[0][i] + 1) / (negative_sum[1] + n_words)] for i in range(n_words)])
 
-        print(positve_sum.shape)
-        print(negative_sum)
-
-        for i in range(n_words):
-            if positve_sum[i] / positve_total_sum > negative_sum[i] / negative_total_sum:
-                likelihood[i] = [i, 0]
-            else:
-                likelihood[i] = [i, 1]
-
-        prior[0] = positive_class.shape[0] / n_docs
-        prior[1] = negative_class.shape[0] / n_docs
-
-        print(prior)
+        prior = [positive_class.shape[0] / n_docs, negative_class.shape[0] / n_docs]
 
         ###########################
 
