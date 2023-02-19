@@ -3,7 +3,7 @@ import numpy as np
 
 class SentimentCorpus:
     
-    def __init__(self, train_per=0.8, dev_per=0, test_per=0.2):
+    def __init__(self, train_per=0.5, dev_per=0, test_per=0.5):
         '''
         prepare dataset
         1) build feature dictionaries
